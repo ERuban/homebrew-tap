@@ -1,6 +1,6 @@
 cask "k5k1-prog" do
-  version "1.1.1"
-  sha256 "2eb4f0ea5d45510fab5c4dc3a84506a0f205217d88beb455e63592bed0ae5080"
+  version "2.0.0"
+  sha256 "c215026befd7e4a6529c02c928b8dc355b721c31e00e4fe8f7292034fab5d4c2"
 
   url "https://github.com/ERuban/k5k1prog-mac/releases/download/v#{version}/K5K1-Prog-#{version}.zip"
   name "K5K1 Prog"
