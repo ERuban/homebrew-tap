@@ -1,0 +1,36 @@
+# Keeps Casks/k5k1-prog.rb on the latest K5K1 Prog release, so `brew upgrade` installs it.
+# Runs every 3 hours and on demand: `gh workflow run bump.yml -R ERuban/homebrew-tap`.
+name: Bump k5k1-prog
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update the cask to the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./bump.sh
+
+      - name: Commit
+        run: |
+          if git diff --quiet; then exit 0; fi
+          version=$(sed -n 's/^  version "\(.*\)"$/\1/p' Casks/k5k1-prog.rb)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "k5k1-prog $version"
+          git push
